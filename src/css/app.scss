@@ -1,0 +1,57 @@
+// app global css in SCSS form
+@import url('https://fonts.googleapis.com/css2?family=Snowburst+One&display=swap');
+
+body {
+  font-family: 'Snowburst One', sans-serif;
+}
+.ingredients {
+  padding: 0 clamp(3vw, 1rem, 3rem);
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  list-style-type: none;
+  min-width: 22rem;
+}
+
+.ingridient {
+  width: clamp(40%, 90px, 150px);
+  margin-bottom: 0.5rem;
+  &-name {
+    color: $light;
+    font-size: 16px;
+    text-align: center;
+    margin: 0.5rem 0;
+  }
+  &-img img {
+    width: 100%;
+    background-color: $light;
+    padding: 0.5rem;
+    border-radius: 100%;
+    object-fit: contain !important;
+    box-sizing: border-box;
+  }
+}
+.burger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.burger-img img {
+  width: 60% !important;
+  max-width: 200px !important;
+  height: initial !important;
+  object-fit: contain;
+}
+.err {
+  text-align: center;
+  color: $negative;
+  font-size: 18px;
+  font-weight: 700;
+}
+.success {
+  text-align: center;
+  color: $positive;
+  font-size: 18px;
+  font-weight: 700;
+}
