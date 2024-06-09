@@ -23,7 +23,7 @@
     </div>
     <div class="row">
       <q-img
-        v-if="url !== null"
+        v-if="ingredient.imageUrl !== null"
         :src="ingredient.imageUrl"
         :ratio="1"
         class="ingridient-img"
@@ -36,14 +36,21 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
+import { ref, watch } from 'vue';
 
-defineProps<{
-  ingredient: IngredientModel;
-  quantity: number;
-}>();
+const props = defineProps<{ ingredient: IngredientModel; quantity: number }>();
+
 const emit = defineEmits(['ingredient-add', 'ingredient-remove']);
+
+const ingredientElement = ref(props.ingredient);
+
+watch(
+  () => props.ingredient,
+  (newElement) => {
+    ingredientElement.value = newElement;
+  }
+);
 
 function ingredientAdd(ingredientName: string) {
   emit('ingredient-add', ingredientName);
@@ -51,7 +58,4 @@ function ingredientAdd(ingredientName: string) {
 function ingredientRemove(ingredientName: string) {
   emit('ingredient-remove', ingredientName);
 }
-
-import { ref } from 'vue';
-const url = ref<string>('https://picsum.photos/500/300');
 </script>

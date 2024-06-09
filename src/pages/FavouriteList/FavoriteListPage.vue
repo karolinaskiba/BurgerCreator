@@ -45,7 +45,8 @@ import { useFavouriteListStore } from '../../stores/favourite-list-store';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 
 const favouriteListStore = useFavouriteListStore();
-let burgers = computed(() => favouriteListStore.allElements);
+
+const burgers = computed(() => favouriteListStore.allElements);
 
 const imageUrlToShow = computed(() => {
   const textToRm = 'ingredient-';

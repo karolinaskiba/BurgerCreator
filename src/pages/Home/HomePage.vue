@@ -10,6 +10,7 @@
     <div class="row">
       <div class="col-sm-6">
         <ingredients-list
+          :ingredients="ingredients"
           @configuration-changed="configurationChanged"
           @configuration-failed="configurationFailed"
         />
@@ -30,7 +31,12 @@ import IngredientsList from '../../components/IngredientsList.vue';
 import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import validationModel from 'src/models/Validation.model';
-import { reactive, ref } from 'vue';
+import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
+import { computed, reactive, ref } from 'vue';
+
+const favouriteListStore = useBurgerIngredienstListStore();
+
+const ingredients = computed(() => favouriteListStore.allElements);
 
 let validationObj = reactive<validationModel>({
   state: '',

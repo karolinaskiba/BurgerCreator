@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { QInput } from 'quasar';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { useFavouriteListStore } from '../stores/favourite-list-store';

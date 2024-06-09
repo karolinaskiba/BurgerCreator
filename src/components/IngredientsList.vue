@@ -1,7 +1,7 @@
 <template>
   <div v-if="ingredients.length > 0">
     <ul class="ingredients">
-      <li v-for="(ingredient, index) in ingredients" :key="index">
+      <li v-for="(ingredient, index) in ingredientsList" :key="index">
         <ingredient-item
           :ingredient="ingredient"
           :quantity="
@@ -23,28 +23,9 @@ import validationModel from 'src/models/Validation.model';
 
 const emit = defineEmits(['configuration-changed', 'configuration-failed']);
 
-const ingredients = reactive<IngredientModel[]>([
-  {
-    name: 'bottom-bun',
-    imageUrl: '../../src/assets/images/bottom-bun.png',
-  },
-  { name: 'top-bun', imageUrl: '../../src/assets/images/top-bun.png' },
-  { name: 'tomato', imageUrl: '../../src/assets/images/tomato.png' },
+const props = defineProps(['ingredients']);
 
-  {
-    name: 'meat',
-    imageUrl: '../../src/assets/images/ingredient-burger.png',
-  },
-  {
-    name: 'fish',
-    imageUrl: '../../src/assets/images/ingredient-fish.png',
-  },
-  { name: 'lettuce', imageUrl: '../../src/assets/images/lettuce.png' },
-  {
-    name: 'cheese',
-    imageUrl: '../../src/assets/images/ingredient-cheese.png',
-  },
-]);
+let ingredientsList = reactive<IngredientModel[]>([...props.ingredients]);
 
 let configuration = reactive<IngredientModel[]>([]);
 
@@ -146,7 +127,7 @@ function ingredientAdd(ingredientName: string) {
   }
 
   let ingredientToAdd: IngredientModel | null =
-    ingredients.find(
+    ingredientsList.find(
       (ingredient: IngredientModel) => ingredient.name === ingredientName
     ) || null;
 
@@ -157,6 +138,7 @@ function ingredientAdd(ingredientName: string) {
 
 function ingredientRemove(ingredientName: string) {
   checkValidationWhenRemove(ingredientName);
+
   if (!validationObj.valid) {
     return;
   }
