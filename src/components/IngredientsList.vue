@@ -21,9 +21,15 @@ import { IngredientModel } from 'src/models/Ingredient.model';
 import IngredientItem from './IngredientItem.vue';
 import validationModel from 'src/models/Validation.model';
 
-const emit = defineEmits(['configuration-changed', 'configuration-failed']);
-
+const emit = defineEmits([
+  'configuration-changed',
+  'configuration-failed',
+  'ingredient-add',
+  'ingredient-remove',
+]);
 const props = defineProps(['ingredients']);
+
+// const configurationListStore = useConfigurationListStore();
 
 let ingredientsList = reactive<IngredientModel[]>([...props.ingredients]);
 
@@ -35,120 +41,127 @@ let validationObj = reactive<validationModel>({
   valid: true,
 });
 
-function clearValidationObj() {
-  validationObj.state = '';
-  validationObj.message = '';
-  validationObj.valid = false;
-}
+// function clearValidationObj() {
+//   validationObj.state = '';
+//   validationObj.message = '';
+//   validationObj.valid = false;
+// }
 
-function checkValidationWhenAdded(ingredientName: string) {
-  const arrLength = configuration.length;
+// function checkValidationWhenAdded(ingredientName: string) {
+//   const arrLength = configuration.length;
 
-  if (configuration[0]?.name === 'top-bun') {
-    validationObj.state = 'success';
-    validationObj.message = 'burger ready';
-    validationObj.valid = false;
-    return;
-  }
+//   if (configuration[0]?.name === 'top-bun') {
+//     validationObj.state = 'success';
+//     validationObj.message = 'burger ready';
+//     validationObj.valid = false;
+//     return;
+//   }
 
-  clearValidationObj();
+//   clearValidationObj();
 
-  if (arrLength === 0 && ingredientName === 'bottom-bun') {
-    validationObj.state = 'pending';
-    validationObj.message = 'ok';
-    validationObj.valid = true;
-    return;
-  }
-  if (arrLength === 0 && ingredientName !== 'bottom-bun') {
-    validationObj.state = 'failed';
-    validationObj.message = 'incorrect-first-element';
-    validationObj.valid = false;
-    return;
-  }
-  if (arrLength > 0 && ingredientName === 'bottom-bun') {
-    validationObj.state = 'failed';
-    validationObj.message = 'bad ingredient';
-    validationObj.valid = false;
-    return;
-  }
-  if (arrLength > 0 && ingredientName === 'top-bun') {
-    validationObj.state = 'success';
-    validationObj.message = 'burger ready';
-    validationObj.valid = true;
-    return;
-  }
-  if (arrLength > 1 && arrLength < 8) {
-    validationObj.state = 'pending';
-    validationObj.message = 'ok';
-    validationObj.valid = true;
-    return;
-  }
-  if (arrLength === 8 && ingredientName !== 'bottom-bun') {
-    validationObj.state = 'failed';
-    validationObj.message = 'last item must be top bun';
-    validationObj.valid = false;
-    return;
-  }
-  validationObj.state = 'pending';
-  validationObj.message = 'ok';
-  validationObj.valid = true;
-}
+//   if (arrLength === 0 && ingredientName === 'bottom-bun') {
+//     validationObj.state = 'pending';
+//     validationObj.message = 'ok';
+//     validationObj.valid = true;
+//     return;
+//   }
+//   if (arrLength === 0 && ingredientName !== 'bottom-bun') {
+//     validationObj.state = 'failed';
+//     validationObj.message = 'incorrect-first-element';
+//     validationObj.valid = false;
+//     return;
+//   }
+//   if (arrLength > 0 && ingredientName === 'bottom-bun') {
+//     validationObj.state = 'failed';
+//     validationObj.message = 'bad ingredient';
+//     validationObj.valid = false;
+//     return;
+//   }
+//   if (arrLength > 0 && ingredientName === 'top-bun') {
+//     validationObj.state = 'success';
+//     validationObj.message = 'burger ready';
+//     validationObj.valid = true;
+//     return;
+//   }
+//   if (arrLength > 1 && arrLength < 8) {
+//     validationObj.state = 'pending';
+//     validationObj.message = 'ok';
+//     validationObj.valid = true;
+//     return;
+//   }
+//   if (arrLength === 8 && ingredientName !== 'bottom-bun') {
+//     validationObj.state = 'failed';
+//     validationObj.message = 'last item must be top bun';
+//     validationObj.valid = false;
+//     return;
+//   }
+//   validationObj.state = 'pending';
+//   validationObj.message = 'ok';
+//   validationObj.valid = true;
+// }
 
-function checkValidationWhenRemove(ingredientName: string) {
-  clearValidationObj();
+// function checkValidationWhenRemove(ingredientName: string) {
+//   clearValidationObj();
 
-  const arrLength = configuration.length;
+//   const arrLength = configuration.length;
 
-  if (arrLength > 1 && ingredientName === 'bottom-bun') {
-    validationObj.state = 'failed';
-    validationObj.message = 'You cannot remove';
-    validationObj.valid = false;
-    return;
-  }
-  if (
-    arrLength > 1 &&
-    !configuration.some((ing: IngredientModel) => ing.name === ingredientName)
-  ) {
-    validationObj.state = 'failed';
-    validationObj.message = 'element not exist';
-    validationObj.valid = false;
-    return;
-  }
-  validationObj.state = 'pending';
-  validationObj.message = 'ok';
-  validationObj.valid = true;
-}
+//   if (arrLength > 1 && ingredientName === 'bottom-bun') {
+//     validationObj.state = 'failed';
+//     validationObj.message = 'You cannot remove';
+//     validationObj.valid = false;
+//     return;
+//   }
+//   if (
+//     arrLength > 1 &&
+//     !configuration.some((ing: IngredientModel) => ing.name === ingredientName)
+//   ) {
+//     validationObj.state = 'failed';
+//     validationObj.message = 'element not exist';
+//     validationObj.valid = false;
+//     return;
+//   }
+//   validationObj.state = 'pending';
+//   validationObj.message = 'ok';
+//   validationObj.valid = true;
+// }
 
 function ingredientAdd(ingredientName: string) {
-  checkValidationWhenAdded(ingredientName);
+  emit('ingredient-add', ingredientName);
 
-  if (!validationObj.valid) {
-    return;
-  }
+  // checkValidationWhenAdded(ingredientName);
 
-  let ingredientToAdd: IngredientModel | null =
-    ingredientsList.find(
-      (ingredient: IngredientModel) => ingredient.name === ingredientName
-    ) || null;
+  // if (!validationObj.valid) {
+  //   return;
+  // }
 
-  if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
-    configuration.unshift(ingredientToAdd);
-  }
+  // let ingredientToAdd: IngredientModel | null =
+  //   ingredientsList.find(
+  //     (ingredient: IngredientModel) => ingredient.name === ingredientName
+  //   ) || null;
+
+  // if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
+  //   // configuration.unshift(ingredientToAdd);
+  //   configurationListStore.addElement(ingredientToAdd);
+  // }
 }
 
 function ingredientRemove(ingredientName: string) {
-  checkValidationWhenRemove(ingredientName);
+  emit('ingredient-remove', ingredientName);
 
-  if (!validationObj.valid) {
-    return;
-  }
+  // checkValidationWhenRemove(ingredientName);
 
-  let index = configuration.findIndex(
-    (ingredient: IngredientModel) => ingredient.name === ingredientName
-  );
-  if (index > -1) {
-    configuration.splice(index, 1);
-  } else return;
+  // if (!validationObj.valid) {
+  //   return;
+  // }
+
+  // configurationListStore.removeElement(ingredientName);
+
+  // let index = configuration.findIndex(
+  //   (ingredient: IngredientModel) => ingredient.name === ingredientName
+  // );
+  // if (index > -1) {
+  //   configuration.splice(index, 1);
+  // } else return;
 }
 
 watch(

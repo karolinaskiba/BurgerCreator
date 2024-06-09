@@ -13,11 +13,13 @@
           :ingredients="ingredients"
           @configuration-changed="configurationChanged"
           @configuration-failed="configurationFailed"
+          @ingredient-add="ingredientAdd"
+          @ingredient-remove="ingredientRemove"
         />
       </div>
       <div class="col-sm-6">
         <burger-configuration
-          :configuration="config"
+          :configuration="configuration"
           :validationObj="validationObj"
           @clear-configuration="clearConfiguration"
         />
@@ -31,12 +33,15 @@ import IngredientsList from '../../components/IngredientsList.vue';
 import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import validationModel from 'src/models/Validation.model';
-import { useBurgerIngredienstListStore } from 'src/stores/burger-ingredients-list-store';
-import { computed, reactive, ref } from 'vue';
+import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
+import { useConfigurationListStore } from 'src/stores/configuration-list-store';
+import { reactive, ref } from 'vue';
 
 const favouriteListStore = useBurgerIngredienstListStore();
+const configurationListStore = useConfigurationListStore();
 
-const ingredients = computed(() => favouriteListStore.allElements);
+const ingredients = reactive(favouriteListStore.allElements);
+const configuration = reactive(configurationListStore.allElements);
 
 let validationObj = reactive<validationModel>({
   state: '',
@@ -57,6 +62,27 @@ function configurationFailed(newValidationObj: validationModel) {
   validationObj.state = newValidationObj.state;
   validationObj.message = newValidationObj.message;
   validationObj.valid = newValidationObj.valid;
+}
+
+function ingredientRemove(ingredientName: string) {
+  // checkValidationWhenRemove(ingredientName);
+
+  // if (!validationObj.valid) {
+  //   return;
+  // }
+
+  configurationListStore.removeElement(ingredientName);
+}
+
+function ingredientAdd(ingredientName: string) {
+  let ingredientToAdd: IngredientModel | null =
+    ingredients.find(
+      (ingredient: IngredientModel) => ingredient.name === ingredientName
+    ) || null;
+
+  if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
+    configurationListStore.addElement(ingredientToAdd);
+  }
 }
 </script>
 

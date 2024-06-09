@@ -5,7 +5,7 @@
         {{ $t('burger-configuration-title') }}
       </h2>
       <h3
-        v-if="props.configuration.length === 0"
+        v-if="configurationElement.length === 0"
         class="text-center text-subtitle1 text-secondary"
       >
         {{ $t('burger-configuration-text') }}
@@ -19,9 +19,9 @@
         {{ completeBurgerListSaveMessage }}
       </p>
 
-      <template v-if="props.configuration.length > 0">
+      <template v-if="configurationElement.length > 0">
         <div
-          v-for="(ingredient, index) in props.configuration"
+          v-for="(ingredient, index) in configurationElement"
           :key="index"
           class="burger"
         >
@@ -62,16 +62,27 @@
       </template>
     </div>
   </div>
+  {{ configurationElement }}
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { QInput } from 'quasar';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { useFavouriteListStore } from '../stores/favourite-list-store';
+import { IngredientModel } from 'src/models/Ingredient.model';
+
+const emit = defineEmits(['clear-configuration']);
 
 const props = defineProps(['validationObj', 'configuration']);
-const emit = defineEmits(['clear-configuration']);
+
+let configurationElement = reactive([...props.configuration]);
+
+watch(props.configuration, (newElement: IngredientModel[]) => {
+  configurationElement.length = 0;
+  configurationElement.push(...newElement);
+});
+
 const burgerName = ref<string>('');
 
 let completeBurgerListSaveStatus = ref<boolean>(false);

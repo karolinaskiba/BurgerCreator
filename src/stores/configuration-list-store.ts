@@ -16,15 +16,15 @@ export const useConfigurationListStore = defineStore({
 
   actions: {
     addElement(item: IngredientModel) {
-      this.list.push(item);
+      this.list.unshift(item);
     },
-    removeElement(item: IngredientModel) {
+    removeElement(ingredientName: string) {
       const index = this.list.findIndex(
-        (ingredient) => ingredient.name === item.name
+        (ingredient: IngredientModel) => ingredient.name === ingredientName
       );
-      if (index !== -1) {
+      if (index > -1) {
         this.list.splice(index, 1);
-      }
+      } else return;
     },
 
     setElements(elements: IngredientModel[]) {
