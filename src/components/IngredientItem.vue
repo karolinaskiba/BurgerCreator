@@ -10,7 +10,7 @@
         @click="ingredientAdd(ingredientElement.name)"
       />
       <span class="text-white">
-        {{ quantity }}
+        {{ quantityValue }}
       </span>
       <q-btn
         round
@@ -37,20 +37,36 @@
 
 <script setup lang="ts">
 import { IngredientModel } from 'src/models/Ingredient.model';
-import { reactive, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const props = defineProps<{ ingredient: IngredientModel; quantity: number }>();
 
 const emit = defineEmits(['ingredient-add', 'ingredient-remove']);
 
 let ingredientElement = reactive({ ...props.ingredient });
+let quantityValue = ref(props.quantity);
 
 watch(
-  () => props.ingredient,
-  (newElement) => {
-    ingredientElement = { ...newElement };
+  [() => props.ingredient, () => props.quantity], // Dodajemy props.quantity do tablicy z funkcjami reaktywnymi
+  ([newIngredient, newQuantity]) => {
+    ingredientElement = { ...newIngredient };
+    quantityValue.value = newQuantity;
   }
 );
+
+// watch(
+//   [() => props.ingredient, () => props.quantity], // Dodajemy props.quantity do tablicy z funkcjami reaktywnymi
+//   ([newIngredient, newQuantity], [oldIngredient, oldQuantity]) => {
+//     // Logika do wykonania po zmianie props.ingredient lub props.quantity
+//     console.log('Nowy składnik:', oldIngredient);
+//     console.log('Nowa ilość:', oldQuantity);
+
+//     // Przykładowa operacja zaktualizowania ingredientElement
+
+//     ingredientElement = { ...newIngredient };
+//     quantityValue.value = newQuantity;
+//   }
+// );
 
 function ingredientAdd(ingredientName: string) {
   emit('ingredient-add', ingredientName);

@@ -62,7 +62,6 @@
       </template>
     </div>
   </div>
-  {{ configurationElement }}
 </template>
 
 <script setup lang="ts">

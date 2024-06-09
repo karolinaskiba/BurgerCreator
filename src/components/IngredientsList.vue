@@ -19,27 +19,22 @@
 import { reactive, watch } from 'vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import IngredientItem from './IngredientItem.vue';
-import validationModel from 'src/models/Validation.model';
+// import validationModel from 'src/models/Validation.model';
 
-const emit = defineEmits([
-  'configuration-changed',
-  'configuration-failed',
-  'ingredient-add',
-  'ingredient-remove',
-]);
-const props = defineProps(['ingredients']);
+const emit = defineEmits(['ingredient-add', 'ingredient-remove']);
+const props = defineProps(['ingredients', 'configuration']);
 
 // const configurationListStore = useConfigurationListStore();
 
 let ingredientsList = reactive<IngredientModel[]>([...props.ingredients]);
 
-let configuration = reactive<IngredientModel[]>([]);
+let configuration = reactive<IngredientModel[]>([...props.configuration]);
 
-let validationObj = reactive<validationModel>({
-  state: '',
-  message: '',
-  valid: true,
-});
+// let validationObj = reactive<validationModel>({
+//   state: '',
+//   message: '',
+//   valid: true,
+// });
 
 // function clearValidationObj() {
 //   validationObj.state = '';
@@ -164,11 +159,16 @@ function ingredientRemove(ingredientName: string) {
   // } else return;
 }
 
-watch(
-  [validationObj, configuration],
-  ([newValidationObj, newConfiguration]) => {
-    emit('configuration-failed', newValidationObj);
-    emit('configuration-changed', newConfiguration);
-  }
-);
+// watch(
+//   [validationObj, configuration],
+//   ([newValidationObj, newConfiguration]) => {
+//     emit('configuration-failed', newValidationObj);
+//     emit('configuration-changed', newConfiguration);
+//   }
+// );
+
+watch(props.configuration, (newElement: IngredientModel[]) => {
+  configuration.length = 0;
+  configuration.push(...newElement);
+});
 </script>
