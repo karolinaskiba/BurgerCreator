@@ -11,8 +11,8 @@
         {{ $t('burger-configuration-text') }}
       </h3>
 
-      <p class="err" v-if="props.validationObj.state === 'failed'">
-        {{ $t(props.validationObj.message) }}
+      <p class="err" v-if="validationObj.state === 'failed'">
+        {{ $t(validationObj.message) }}
       </p>
 
       <p :class="completeBurgerListSaveStatus ? 'success' : 'err'">
@@ -34,7 +34,7 @@
           />
         </div>
       </template>
-      <template v-if="props.validationObj.state === 'success'">
+      <template v-if="validationObj.state === 'success'">
         <div class="row">
           <div class="col">
             <form
@@ -70,17 +70,17 @@ import { QInput } from 'quasar';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { useFavouriteListStore } from '../stores/favourite-list-store';
 import { IngredientModel } from 'src/models/Ingredient.model';
+import { useValidationStore } from 'src/stores/validation-configuration-store';
+import ValidationModel from 'src/models/Validation.model';
 
 const emit = defineEmits(['clear-configuration']);
 
-const props = defineProps(['validationObj', 'configuration']);
+const props = defineProps(['configuration']);
 
 let configurationElement = reactive([...props.configuration]);
 
-watch(props.configuration, (newElement: IngredientModel[]) => {
-  configurationElement.length = 0;
-  configurationElement.push(...newElement);
-});
+const validationStore = useValidationStore();
+let validationObj = reactive<ValidationModel>(validationStore.getValidationObj);
 
 const burgerName = ref<string>('');
 
@@ -111,18 +111,31 @@ const saveBurger = () => {
   } else {
     let completeBurger = {
       name: burgerName.value,
-      ingredients: props.configuration,
+      ingredients: configurationElement,
     };
     completeBurgerList.push(completeBurger);
     completeBurgerListSaveStatus.value = true;
     completeBurgerListSaveMessage.value = 'Burger saved successfully';
     emit('clear-configuration');
+
     console.log(completeBurgerList);
     favouriteListStore.setElements(completeBurgerList);
   }
 
   burgerName.value = '';
 };
+
+watch(props.configuration, (newElement: IngredientModel[]) => {
+  configurationElement.length = 0;
+  configurationElement.push(...newElement);
+});
+
+watch(
+  () => validationStore.getValidationObj,
+  (newValidationObj) => {
+    Object.assign(validationObj, newValidationObj);
+  }
+);
 </script>
 
 <style scoped lang="scss">

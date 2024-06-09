@@ -19,7 +19,6 @@
       <div class="col-sm-6">
         <burger-configuration
           :configuration="configuration"
-          :validationObj="validationObj"
           @clear-configuration="clearConfiguration"
         />
       </div>
@@ -45,9 +44,13 @@ const favouriteListStore = useBurgerIngredienstListStore();
 const configurationListStore = useConfigurationListStore();
 const validationStore = useValidationStore();
 
-const ingredients = reactive(favouriteListStore.allElements);
-const configuration = reactive(configurationListStore.allElements);
-const validationObj = reactive(validationStore.getValidationObj);
+const ingredients = reactive<IngredientModel[]>(favouriteListStore.allElements);
+const configuration = reactive<IngredientModel[]>(
+  configurationListStore.allElements
+);
+// const validationObj = reactive<ValidationModel>(
+//   validationStore.getValidationObj
+// );
 
 let config = ref<IngredientModel[]>([]);
 
@@ -55,14 +58,17 @@ function clearConfiguration() {
   config.value = [];
 }
 
-let validationResult: ValidationModel = reactive({
-  state: '',
-  message: '',
-  valid: false,
-});
+// let validationResult: ValidationModel = reactive({
+//   state: '',
+//   message: '',
+//   valid: false,
+// });
 
 function ingredientRemove(ingredientName: string) {
-  validationResult = checkValidationWhenRemove(ingredientName, configuration);
+  let validationResult: ValidationModel = checkValidationWhenRemove(
+    ingredientName,
+    configuration
+  );
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.valid) {
@@ -73,7 +79,10 @@ function ingredientRemove(ingredientName: string) {
 }
 
 function ingredientAdd(ingredientName: string) {
-  validationResult = checkValidationWhenAdded(ingredientName, configuration);
+  let validationResult: ValidationModel = checkValidationWhenAdded(
+    ingredientName,
+    configuration
+  );
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.valid) {
