@@ -31,7 +31,7 @@ import IngredientsList from '../../components/IngredientsList.vue';
 import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import validationModel from 'src/models/Validation.model';
-import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
+import { useBurgerIngredienstListStore } from 'src/stores/burger-ingredients-list-store';
 import { computed, reactive, ref } from 'vue';
 
 const favouriteListStore = useBurgerIngredienstListStore();
