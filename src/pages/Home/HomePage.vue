@@ -31,7 +31,7 @@
 import IngredientsList from '../../components/IngredientsList.vue';
 import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
-import validationModel from 'src/models/Validation.model';
+import ValidationModel from 'src/models/Validation.model';
 import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
 import { useConfigurationListStore } from 'src/stores/configuration-list-store';
 import { useValidationStore } from 'src/stores/validation-configuration-store';
@@ -55,7 +55,7 @@ function clearConfiguration() {
   config.value = [];
 }
 
-let validationResult: validationModel = reactive({
+let validationResult: ValidationModel = reactive({
   state: '',
   message: '',
   valid: false,

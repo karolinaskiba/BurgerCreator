@@ -19,7 +19,7 @@
 import { reactive, watch } from 'vue';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import IngredientItem from './IngredientItem.vue';
-// import validationModel from 'src/models/Validation.model';
+// import ValidationModel from 'src/models/Validation.model';
 
 const emit = defineEmits(['ingredient-add', 'ingredient-remove']);
 const props = defineProps(['ingredients', 'configuration']);
@@ -30,7 +30,7 @@ let ingredientsList = reactive<IngredientModel[]>([...props.ingredients]);
 
 let configuration = reactive<IngredientModel[]>([...props.configuration]);
 
-// let validationObj = reactive<validationModel>({
+// let validationObj = reactive<ValidationModel>({
 //   state: '',
 //   message: '',
 //   valid: true,

@@ -1,5 +1,5 @@
 import { IngredientModel } from 'src/models/Ingredient.model';
-import validationModel from 'src/models/Validation.model';
+import ValidationModel from 'src/models/Validation.model';
 import { useValidationStore } from 'src/stores/validation-configuration-store';
 
 const validationObjStore = useValidationStore();
@@ -7,7 +7,7 @@ const validationObjStore = useValidationStore();
 export function checkValidationWhenAdded(
   ingredientName: string,
   configuration: IngredientModel[]
-): validationModel {
+): ValidationModel {
   const arrLength = configuration.length;
 
   if (configuration[0]?.name === 'top-bun') {
@@ -74,7 +74,7 @@ export function checkValidationWhenAdded(
 export function checkValidationWhenRemove(
   ingredientName: string,
   configuration: IngredientModel[]
-): validationModel {
+): ValidationModel {
   validationObjStore.clearValidationObj();
 
   const arrLength = configuration.length;

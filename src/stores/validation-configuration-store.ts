@@ -1,22 +1,22 @@
 import { defineStore } from 'pinia';
-import validationModel from 'src/models/Validation.model';
+import ValidationModel from 'src/models/Validation.model';
 
 export const useValidationStore = defineStore({
   id: 'validationStore',
 
   state: () => ({
-    validationObj: {} as validationModel,
+    validationObj: {} as ValidationModel,
   }),
 
   getters: {
-    getValidationObj(): validationModel {
+    getValidationObj(): ValidationModel {
       console.log('get', this.validationObj);
       return this.validationObj;
     },
   },
 
   actions: {
-    setValidationObj(element: validationModel) {
+    setValidationObj(element: ValidationModel) {
       this.validationObj = { ...element };
       console.log('set', this.validationObj);
     },
