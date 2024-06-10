@@ -16,7 +16,7 @@
       </p>
 
       <p :class="completeBurgerListSaveStatus ? 'success' : 'err'">
-        {{ completeBurgerListSaveMessage }}
+        {{ $t(completeBurgerListSaveMessage) }}
       </p>
 
       <template v-if="configurationElement.length > 0">
@@ -100,13 +100,14 @@ const savedBurgersNames: string[] = favouriteListElement.map(
 const saveBurger = () => {
   if (savedBurgersNames.includes(burgerName.value)) {
     completeBurgerListSaveStatus.value = false;
-    completeBurgerListSaveMessage.value = 'This burger name already exists !';
+    completeBurgerListSaveMessage.value = 'Validation-messages.already exists';
     return;
   }
 
   if (burgerName.value === '') {
     completeBurgerListSaveStatus.value = false;
-    completeBurgerListSaveMessage.value = 'Name can not be empty!';
+    completeBurgerListSaveMessage.value =
+      'Validation-messages.name field empty';
     return;
   } else {
     emit('save-burger', {
@@ -115,7 +116,7 @@ const saveBurger = () => {
     });
 
     completeBurgerListSaveStatus.value = true;
-    completeBurgerListSaveMessage.value = 'Burger saved successfully';
+    completeBurgerListSaveMessage.value = 'Validation-messages.burger saved';
   }
   emit('clear-configuration');
 
