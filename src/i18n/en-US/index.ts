@@ -18,6 +18,11 @@ export default {
     'You don’t have any favourites burgers',
   'Burger name required': 'Burger name can not be empty',
   'Favourites Burgers Title': 'Favourites Burgers',
+  'Validation-messages': {
+    'already exists': 'Name of this burger already exists!',
+    'name field empty': 'The name field cannot be empty',
+    'burger saved': 'Burger saved successfully!',
+  },
   failed: 'Action failed',
   success: 'Action was successful',
   button: {
