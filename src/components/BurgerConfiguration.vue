@@ -70,17 +70,16 @@ import { QInput } from 'quasar';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { useFavouriteListStore } from '../stores/favourite-list-store';
 import { IngredientModel } from 'src/models/Ingredient.model';
-import { useValidationStore } from 'src/stores/validation-configuration-store';
+// import { useValidationStore } from 'src/stores/validation-configuration-store';
+// import ValidationModel from 'src/models/Validation.model';
+import { useConfigurationListStore } from 'src/stores/configuration-list-store';
 import ValidationModel from 'src/models/Validation.model';
 
+const props = defineProps(['configuration', 'validationObj']);
 const emit = defineEmits(['clear-configuration']);
 
-const props = defineProps(['configuration']);
-
 let configurationElement = reactive([...props.configuration]);
-
-const validationStore = useValidationStore();
-let validationObj = reactive<ValidationModel>(validationStore.getValidationObj);
+let validationObj = ref<ValidationModel>(props.validationObj);
 
 const burgerName = ref<string>('');
 
@@ -90,6 +89,8 @@ let completeBurgerListSaveMessage = ref<string>('');
 let completeBurgerList = reactive<CompleteBurgerModel[]>([]);
 
 const favouriteListStore = useFavouriteListStore();
+
+const configurationListStore = useConfigurationListStore();
 
 const imageUrlToShow = computed(() => {
   const textToRm = 'ingredient-';
@@ -111,17 +112,18 @@ const saveBurger = () => {
   } else {
     let completeBurger = {
       name: burgerName.value,
-      ingredients: configurationElement,
+      ingredients: [...configurationElement],
     };
     completeBurgerList.push(completeBurger);
+    favouriteListStore.addElement(completeBurger);
+
     completeBurgerListSaveStatus.value = true;
     completeBurgerListSaveMessage.value = 'Burger saved successfully';
-    emit('clear-configuration');
-
-    console.log(completeBurgerList);
-    favouriteListStore.setElements(completeBurgerList);
   }
-
+  emit('clear-configuration');
+  configurationElement.length = 0;
+  configurationListStore.setElements([]);
+  validationObj.value = { state: '', message: '', valid: false };
   burgerName.value = '';
 };
 
@@ -131,9 +133,9 @@ watch(props.configuration, (newElement: IngredientModel[]) => {
 });
 
 watch(
-  () => validationStore.getValidationObj,
-  (newValidationObj) => {
-    Object.assign(validationObj, newValidationObj);
+  () => props.validationObj,
+  (newValue) => {
+    validationObj.value = newValue.value;
   }
 );
 </script>

@@ -5,12 +5,17 @@ export const useValidationStore = defineStore({
   id: 'validationStore',
 
   state: () => ({
-    validationObj: {} as ValidationModel,
+    validationObj: {
+      state: '',
+      message: '',
+      valid: false,
+    } as ValidationModel,
   }),
 
   getters: {
     getValidationObj(): ValidationModel {
       console.log('get', this.validationObj);
+
       return this.validationObj;
     },
   },
@@ -20,8 +25,10 @@ export const useValidationStore = defineStore({
       this.validationObj = { ...element };
       console.log('set', this.validationObj);
     },
-    clearValidationObj(): void {
+
+    clearValidationObj() {
       this.validationObj = {
+        ...this.validationObj,
         state: '',
         message: '',
         valid: false,

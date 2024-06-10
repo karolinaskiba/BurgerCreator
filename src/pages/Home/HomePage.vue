@@ -18,6 +18,7 @@
       </div>
       <div class="col-sm-6">
         <burger-configuration
+          :validationObj="validationObjValue"
           :configuration="configuration"
           @clear-configuration="clearConfiguration"
         />
@@ -48,34 +49,34 @@ const ingredients = reactive<IngredientModel[]>(favouriteListStore.allElements);
 const configuration = reactive<IngredientModel[]>(
   configurationListStore.allElements
 );
-// const validationObj = reactive<ValidationModel>(
-//   validationStore.getValidationObj
-// );
 
-let config = ref<IngredientModel[]>([]);
+let validationObjValue = ref<ValidationModel>(validationStore.getValidationObj);
 
 function clearConfiguration() {
-  config.value = [];
+  configurationListStore.setElements([]);
+  validationStore.clearValidationObj;
+  configuration.length = 0;
 }
-
-// let validationResult: ValidationModel = reactive({
-//   state: '',
-//   message: '',
-//   valid: false,
-// });
 
 function ingredientRemove(ingredientName: string) {
   let validationResult: ValidationModel = checkValidationWhenRemove(
     ingredientName,
     configuration
   );
+
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.valid) {
+    validationObjValue.value.valid = validationStore.getValidationObj.valid;
+    validationObjValue.value.state = validationStore.getValidationObj.state;
+    validationObjValue.value.message = validationStore.getValidationObj.message;
     return;
   }
 
   configurationListStore.removeElement(ingredientName);
+  validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  validationObjValue.value.state = validationStore.getValidationObj.state;
+  validationObjValue.value.message = validationStore.getValidationObj.message;
 }
 
 function ingredientAdd(ingredientName: string) {
@@ -86,6 +87,9 @@ function ingredientAdd(ingredientName: string) {
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.valid) {
+    validationObjValue.value.valid = validationStore.getValidationObj.valid;
+    validationObjValue.value.state = validationStore.getValidationObj.state;
+    validationObjValue.value.message = validationStore.getValidationObj.message;
     return;
   }
 
@@ -97,6 +101,9 @@ function ingredientAdd(ingredientName: string) {
   if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
     configurationListStore.addElement(ingredientToAdd);
   }
+  validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  validationObjValue.value.state = validationStore.getValidationObj.state;
+  validationObjValue.value.message = validationStore.getValidationObj.message;
 }
 </script>
 
