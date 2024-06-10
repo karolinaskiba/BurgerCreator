@@ -51,6 +51,9 @@ export const useBurgerIngredienstListStore = defineStore({
     setElements(elements: IngredientModel[]) {
       this.list = elements;
     },
+    resetStore() {
+      this.list = [];
+    },
   },
 });
 

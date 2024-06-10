@@ -20,6 +20,8 @@
         <burger-configuration
           :validationObj="validationObjValue"
           :configuration="configuration"
+          :favouriteList="favouriteList"
+          @save-burger="saveBurger"
           @clear-configuration="clearConfiguration"
         />
       </div>
@@ -35,28 +37,31 @@ import ValidationModel from 'src/models/Validation.model';
 import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
 import { useConfigurationListStore } from 'src/stores/configuration-list-store';
 import { useValidationStore } from 'src/stores/validation-configuration-store';
+import { useFavouriteListStore } from 'src/stores/favourite-list-store';
+import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
+
 import {
   checkValidationWhenAdded,
   checkValidationWhenRemove,
 } from '../../helpers/validationHelpers';
 import { reactive, ref } from 'vue';
 
-const favouriteListStore = useBurgerIngredienstListStore();
+const burgerIngredienstListStore = useBurgerIngredienstListStore();
 const configurationListStore = useConfigurationListStore();
 const validationStore = useValidationStore();
+const favouriteListStore = useFavouriteListStore();
 
-const ingredients = reactive<IngredientModel[]>(favouriteListStore.allElements);
+const ingredients = reactive<IngredientModel[]>(
+  burgerIngredienstListStore.allElements
+);
 const configuration = reactive<IngredientModel[]>(
   configurationListStore.allElements
 );
+const favouriteList = reactive<CompleteBurgerModel[]>(
+  favouriteListStore.allElements
+);
 
 let validationObjValue = ref<ValidationModel>(validationStore.getValidationObj);
-
-function clearConfiguration() {
-  configurationListStore.setElements([]);
-  validationStore.clearValidationObj;
-  configuration.length = 0;
-}
 
 function ingredientRemove(ingredientName: string) {
   let validationResult: ValidationModel = checkValidationWhenRemove(
@@ -104,6 +109,15 @@ function ingredientAdd(ingredientName: string) {
   validationObjValue.value.valid = validationStore.getValidationObj.valid;
   validationObjValue.value.state = validationStore.getValidationObj.state;
   validationObjValue.value.message = validationStore.getValidationObj.message;
+}
+function saveBurger(completeBurger: CompleteBurgerModel) {
+  favouriteListStore.addElement(completeBurger);
+  favouriteListStore.allElements;
+}
+function clearConfiguration() {
+  configurationListStore.resetStore();
+  validationStore.resetStore();
+  configuration.length = 0;
 }
 </script>
 

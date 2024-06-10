@@ -67,30 +67,21 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue';
 import { QInput } from 'quasar';
-import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
-import { useFavouriteListStore } from '../stores/favourite-list-store';
 import { IngredientModel } from 'src/models/Ingredient.model';
-// import { useValidationStore } from 'src/stores/validation-configuration-store';
-// import ValidationModel from 'src/models/Validation.model';
-import { useConfigurationListStore } from 'src/stores/configuration-list-store';
+
 import ValidationModel from 'src/models/Validation.model';
 
-const props = defineProps(['configuration', 'validationObj']);
-const emit = defineEmits(['clear-configuration']);
+const props = defineProps(['configuration', 'validationObj', 'favouriteList']);
+const emit = defineEmits(['clear-configuration', 'save-burger']);
 
 let configurationElement = reactive([...props.configuration]);
+let favouriteListElement = reactive([...props.favouriteList]);
 let validationObj = ref<ValidationModel>(props.validationObj);
 
 const burgerName = ref<string>('');
 
 let completeBurgerListSaveStatus = ref<boolean>(false);
 let completeBurgerListSaveMessage = ref<string>('');
-
-let completeBurgerList = reactive<CompleteBurgerModel[]>([]);
-
-const favouriteListStore = useFavouriteListStore();
-
-const configurationListStore = useConfigurationListStore();
 
 const imageUrlToShow = computed(() => {
   const textToRm = 'ingredient-';
@@ -103,28 +94,35 @@ const imageUrlToShow = computed(() => {
     return imageUrl;
   };
 });
-
+const savedBurgersNames: string[] = favouriteListElement.map(
+  (burger) => burger.name
+);
 const saveBurger = () => {
+  if (savedBurgersNames.includes(burgerName.value)) {
+    completeBurgerListSaveStatus.value = false;
+    completeBurgerListSaveMessage.value = 'This burger name already exists !';
+    return;
+  }
+
   if (burgerName.value === '') {
     completeBurgerListSaveStatus.value = false;
     completeBurgerListSaveMessage.value = 'Name can not be empty!';
     return;
   } else {
-    let completeBurger = {
+    emit('save-burger', {
       name: burgerName.value,
       ingredients: [...configurationElement],
-    };
-    completeBurgerList.push(completeBurger);
-    favouriteListStore.addElement(completeBurger);
+    });
 
     completeBurgerListSaveStatus.value = true;
     completeBurgerListSaveMessage.value = 'Burger saved successfully';
   }
   emit('clear-configuration');
-  configurationElement.length = 0;
-  configurationListStore.setElements([]);
-  validationObj.value = { state: '', message: '', valid: false };
+
   burgerName.value = '';
+
+  configurationElement.length = 0;
+  validationObj.value = { state: '', message: '', valid: false };
 };
 
 watch(props.configuration, (newElement: IngredientModel[]) => {

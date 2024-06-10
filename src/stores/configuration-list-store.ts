@@ -30,6 +30,9 @@ export const useConfigurationListStore = defineStore({
     setElements(elements: IngredientModel[]) {
       this.list = elements;
     },
+    resetStore() {
+      this.list = [];
+    },
   },
 });
 

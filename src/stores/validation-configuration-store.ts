@@ -26,13 +26,10 @@ export const useValidationStore = defineStore({
       console.log('set', this.validationObj);
     },
 
-    clearValidationObj() {
-      this.validationObj = {
-        ...this.validationObj,
-        state: '',
-        message: '',
-        valid: false,
-      };
+    resetStore() {
+      this.validationObj.message = '';
+      this.validationObj.state = '';
+      this.validationObj.valid = null;
     },
   },
 });

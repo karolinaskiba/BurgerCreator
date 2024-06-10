@@ -28,6 +28,10 @@ export const useFavouriteListStore = defineStore({
     setElements(elements: CompleteBurgerModel[]) {
       this.list = elements;
     },
+
+    resetStore() {
+      this.list = [];
+    },
   },
 });
 
