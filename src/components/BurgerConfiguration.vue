@@ -12,8 +12,10 @@
       </h3>
 
       <p
-        v-if="validationstate !== 'pending'"
-        :class="validationstate === 'failed' ? 'err' : 'success'"
+        v-if="validationstate !== ValidationStatusEnum.PENDING"
+        :class="
+          validationstate === ValidationStatusEnum.FAILED ? 'err' : 'success'
+        "
       >
         {{ $t(message) }}
       </p>
@@ -37,7 +39,7 @@
           />
         </div>
       </template>
-      <template v-if="validationstate === 'ready to save'">
+      <template v-if="validationstate === ValidationStatusEnum.READY_TO_SAVE">
         <div class="row">
           <div class="col">
             <form
@@ -78,6 +80,7 @@ import { computed, ref, watch, watchEffect } from 'vue';
 import { QInput } from 'quasar';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
+import { ValidationStatusEnum } from 'src/enums/ValidationStatus.enum';
 
 const emit = defineEmits(['clear-configuration', 'save-burger']);
 

@@ -1,151 +1,8 @@
-// import { IngredientModel } from 'src/models/Ingredient.model';
-// import { ValidationModel } from 'src/models/Validation.model';
-
-// export function checkValidationWhenAdded(
-//   ingredientName: string,
-//   configuration: IngredientModel[]
-// ): ValidationModel {
-//   const arrLength = configuration.length;
-
-//   if (configuration[0]?.name === 'top-bun') {
-//     if (ingredientName === 'top-bun') {
-//       return {
-//         state: 'ready to save',
-//         message: 'burger ready to save',
-//         proceed: false,
-//       };
-//     } else {
-//       return {
-//         state: 'failed',
-//         message: 'bad ingredient',
-//         proceed: false,
-//       };
-//     }
-//   }
-
-//   // if (configuration[0]?.name === 'top-bun' && ingredientName === 'top-bun') {
-//   //   return {
-//   //     state: 'ready to save',
-//   //     message: '',
-//   //     proceed: false,
-//   //   };
-//   // }
-
-//   // if (configuration[0]?.name === 'top-bun') {
-//   //   return {
-//   //     state: 'ready to save',
-//   //     message: '',
-//   //     proceed: false,
-//   //   };
-//   // }
-
-//   if (arrLength === 0 && ingredientName === 'bottom-bun') {
-//     return {
-//       state: 'pending',
-//       message: 'ok',
-//       proceed: true,
-//     };
-//   }
-//   if (arrLength === 0 && ingredientName !== 'bottom-bun') {
-//     return {
-//       state: 'failed',
-//       message: 'incorrect-first-element',
-//       proceed: false,
-//     };
-//   }
-
-//   if (arrLength > 0 && ingredientName === 'bottom-bun') {
-//     return {
-//       state: 'failed',
-//       message: 'bad ingredient',
-//       proceed: false,
-//     };
-//   }
-//   if (arrLength > 0 && ingredientName === 'top-bun') {
-//     return {
-//       state: 'ready to save',
-//       message: 'burger ready to save',
-//       proceed: true,
-//     };
-//   }
-//   if (arrLength > 1 && arrLength < 8) {
-//     return {
-//       state: 'pending',
-//       message: 'ok',
-//       proceed: true,
-//     };
-//   }
-//   if (arrLength === 8 && ingredientName !== 'bottom-bun') {
-//     return {
-//       state: 'failed',
-//       message: 'last item must be top bun',
-//       proceed: false,
-//     };
-//   }
-
-//   return {
-//     state: 'pending',
-//     message: 'ok',
-//     proceed: true,
-//   };
-// }
-
-// export function checkValidationWhenRemove(
-//   ingredientName: string,
-//   configuration: IngredientModel[]
-// ): ValidationModel {
-//   const arrLength = configuration.length;
-
-//   if (configuration[0]?.name === 'top-bun') {
-//     if (ingredientName === 'top-bun') {
-//       return {
-//         state: 'pending',
-//         message: 'ok',
-//         proceed: true,
-//       };
-//     } else {
-//       return {
-//         state: 'ready to save',
-//         message: '',
-//         proceed: false,
-//       };
-//     }
-//   }
-
-//   // if (configuration[0]?.name === 'top-bun' && ingredientName !== 'top-bun') {
-//   //   return {
-//   //     state: 'ready to save',
-//   //     message: '',
-//   //     proceed: false,
-//   //   };
-//   // }
-
-//   if (arrLength > 1 && ingredientName === 'bottom-bun') {
-//     return {
-//       state: 'failed',
-//       message: 'You cannot remove',
-//       proceed: false,
-//     };
-//   }
-//   if (
-//     arrLength > 1 &&
-//     !configuration.some((ing: IngredientModel) => ing.name === ingredientName)
-//   ) {
-//     return {
-//       state: 'failed',
-//       message: 'element not exist',
-//       proceed: false,
-//     };
-//   }
-//   return {
-//     state: 'pending',
-//     message: 'ok',
-//     proceed: true,
-//   };
-// }
-
 import { IngredientModel } from 'src/models/Ingredient.model';
 import { ValidationModel } from 'src/models/Validation.model';
+import { ValidationStatusEnum } from 'src/enums/ValidationStatus.enum';
+import { ValidationMessageEnum } from 'src/enums/ValidationMessag.enum';
+import { getValidationMessageLabel } from 'src/utils/getValidationMessageLabel';
 
 export function checkValidationWhenAdded(
   ingredientName: string,
@@ -154,16 +11,20 @@ export function checkValidationWhenAdded(
   const arrLength = configuration.length;
 
   if (configuration[0]?.name === 'top-bun') {
-    if (ingredientName == 'bottom-bun') {
+    if (ingredientName === 'bottom-bun') {
       return {
-        state: 'ready to save',
-        message: 'you can not add more top bun',
+        status: ValidationStatusEnum.READY_TO_SAVE,
+        message: getValidationMessageLabel(
+          ValidationMessageEnum.YOU_CAN_NOT_ADD_MORE_TOP_BUN
+        ),
         proceed: false,
       };
     } else {
       return {
-        state: 'ready to save',
-        message: 'you can not add more ingredients',
+        status: ValidationStatusEnum.READY_TO_SAVE,
+        message: getValidationMessageLabel(
+          ValidationMessageEnum.YOU_CAN_NOT_ADD_MORE_INGREDIENTS
+        ),
         proceed: false,
       };
     }
@@ -171,51 +32,57 @@ export function checkValidationWhenAdded(
 
   if (arrLength === 0 && ingredientName === 'bottom-bun') {
     return {
-      state: 'pending',
-      message: 'ok',
+      status: ValidationStatusEnum.PENDING,
+      message: getValidationMessageLabel(ValidationMessageEnum.OK),
       proceed: true,
     };
   }
   if (arrLength === 0 && ingredientName !== 'bottom-bun') {
     return {
-      state: 'failed',
-      message: 'incorrect-first-element',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.INCORRECT_FIRST_ELEMENT
+      ),
       proceed: false,
     };
   }
 
   if (arrLength > 0 && ingredientName === 'bottom-bun') {
     return {
-      state: 'failed',
-      message: 'bad ingredient',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(ValidationMessageEnum.BAD_INGREDIENT),
       proceed: false,
     };
   }
   if (arrLength > 0 && ingredientName === 'top-bun') {
     return {
-      state: 'ready to save',
-      message: 'burger ready to save',
+      status: ValidationStatusEnum.READY_TO_SAVE,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.BURGER_READY_TO_SAVE
+      ),
       proceed: true,
     };
   }
   if (arrLength > 1 && arrLength < 8) {
     return {
-      state: 'pending',
-      message: 'ok',
+      status: ValidationStatusEnum.PENDING,
+      message: getValidationMessageLabel(ValidationMessageEnum.OK),
       proceed: true,
     };
   }
   if (arrLength === 8 && ingredientName !== 'top-bun') {
     return {
-      state: 'failed',
-      message: 'last item must be top bun',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.LAST_ITEM_MUST_BE_TOP_BUN
+      ),
       proceed: false,
     };
   }
 
   return {
-    state: 'pending',
-    message: 'ok',
+    status: ValidationStatusEnum.PENDING,
+    message: getValidationMessageLabel(ValidationMessageEnum.OK),
     proceed: true,
   };
 }
@@ -229,14 +96,16 @@ export function checkValidationWhenRemove(
   if (configuration[0]?.name === 'top-bun') {
     if (ingredientName === 'top-bun') {
       return {
-        state: 'pending',
-        message: 'ok',
+        status: ValidationStatusEnum.PENDING,
+        message: getValidationMessageLabel(ValidationMessageEnum.OK),
         proceed: true,
       };
     } else {
       return {
-        state: 'ready to save',
-        message: 'you can not remove something from inside',
+        status: ValidationStatusEnum.READY_TO_SAVE,
+        message: getValidationMessageLabel(
+          ValidationMessageEnum.YOU_CAN_NOT_REMOVE_FROM_INSIDE
+        ),
         proceed: false,
       };
     }
@@ -244,15 +113,19 @@ export function checkValidationWhenRemove(
 
   if (arrLength > 1 && ingredientName === 'bottom-bun') {
     return {
-      state: 'failed',
-      message: 'You cannot remove',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.YOU_CANNOT_REMOVE
+      ),
       proceed: false,
     };
   }
-  if (arrLength == 0) {
+  if (arrLength === 0) {
     return {
-      state: 'failed',
-      message: 'your burger is empty',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.YOUR_BURGER_IS_EMPTY
+      ),
       proceed: false,
     };
   }
@@ -262,14 +135,16 @@ export function checkValidationWhenRemove(
     !configuration.some((ing: IngredientModel) => ing.name === ingredientName)
   ) {
     return {
-      state: 'failed',
-      message: 'element not exist',
+      status: ValidationStatusEnum.FAILED,
+      message: getValidationMessageLabel(
+        ValidationMessageEnum.ELEMENT_NOT_EXIST
+      ),
       proceed: false,
     };
   }
   return {
-    state: 'pending',
-    message: 'ok',
+    status: ValidationStatusEnum.PENDING,
+    message: getValidationMessageLabel(ValidationMessageEnum.OK),
     proceed: true,
   };
 }

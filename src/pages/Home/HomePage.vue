@@ -60,7 +60,7 @@ let favouriteList = ref<CompleteBurgerModel[]>(favouriteListStore.allElements);
 
 let validationObjValue = ref<ValidationModel>(validationStore.getValidationObj);
 let message = ref<string>(validationObjValue.value.message);
-let state = ref<string>(validationObjValue.value.state);
+let state = ref<string>(validationObjValue.value.status);
 
 function ingredientRemove(ingredientName: string) {
   let validationResult: ValidationModel = checkValidationWhenRemove(
@@ -72,14 +72,14 @@ function ingredientRemove(ingredientName: string) {
 
   if (!validationStore.getValidationObj.proceed) {
     message.value = validationStore.getValidationObj.message;
-    state.value = validationStore.getValidationObj.state;
+    state.value = validationStore.getValidationObj.status;
     return;
   }
 
   configurationListStore.removeElement(ingredientName);
 
   message.value = validationStore.getValidationObj.message;
-  state.value = validationStore.getValidationObj.state;
+  state.value = validationStore.getValidationObj.status;
 }
 
 function ingredientAdd(ingredientName: string) {
@@ -91,7 +91,7 @@ function ingredientAdd(ingredientName: string) {
 
   if (!validationStore.getValidationObj.proceed) {
     message.value = validationStore.getValidationObj.message;
-    state.value = validationStore.getValidationObj.state;
+    state.value = validationStore.getValidationObj.status;
     return;
   }
 
@@ -105,7 +105,7 @@ function ingredientAdd(ingredientName: string) {
   }
 
   message.value = validationStore.getValidationObj.message;
-  state.value = validationStore.getValidationObj.state;
+  state.value = validationStore.getValidationObj.status;
 }
 function saveBurger(completeBurger: CompleteBurgerModel) {
   favouriteListStore.addElement(completeBurger);
@@ -119,7 +119,7 @@ function clearConfiguration() {
   configuration.value = configurationListStore.allElements;
   favouriteList.value = favouriteListStore.allElements;
   validationObjValue.value.proceed = false;
-  validationObjValue.value.state = '';
+  validationObjValue.value.status = '';
   validationObjValue.value.message = '';
 }
 </script>

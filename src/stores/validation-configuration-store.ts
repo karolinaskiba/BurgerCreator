@@ -6,7 +6,7 @@ export const useValidationStore = defineStore({
 
   state: () => ({
     validationObj: {
-      state: '',
+      status: '',
       message: '',
       proceed: false,
     } as ValidationModel,
@@ -25,7 +25,7 @@ export const useValidationStore = defineStore({
 
     resetStore() {
       this.validationObj.message = '';
-      this.validationObj.state = '';
+      this.validationObj.status = '';
       this.validationObj.proceed = null;
     },
   },

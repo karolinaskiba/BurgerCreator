@@ -1,5 +1,7 @@
+import { ValidationStatusEnum } from 'src/enums/ValidationStatus.enum';
+
 export interface ValidationModel {
-  state: 'pending' | 'failed' | 'success' | 'ready to save' | '';
+  status: ValidationStatusEnum | '';
   message: string;
   proceed: boolean | null;
 }
