@@ -18,7 +18,6 @@
       </div>
       <div class="col-12 col-sm-6">
         <burger-configuration
-          :validationObj="validationObjValue"
           :message="message"
           :validationstate="state"
           :configuration="configuration"
@@ -72,19 +71,12 @@ function ingredientRemove(ingredientName: string) {
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.proceed) {
-    validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
-    validationObjValue.value.state = validationStore.getValidationObj.state;
-    validationObjValue.value.message = validationStore.getValidationObj.message;
-
     message.value = validationStore.getValidationObj.message;
     state.value = validationStore.getValidationObj.state;
     return;
   }
 
   configurationListStore.removeElement(ingredientName);
-  validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
-  validationObjValue.value.state = validationStore.getValidationObj.state;
-  validationObjValue.value.message = validationStore.getValidationObj.message;
 
   message.value = validationStore.getValidationObj.message;
   state.value = validationStore.getValidationObj.state;
@@ -98,10 +90,6 @@ function ingredientAdd(ingredientName: string) {
   validationStore.setValidationObj(validationResult);
 
   if (!validationStore.getValidationObj.proceed) {
-    validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
-    validationObjValue.value.state = validationStore.getValidationObj.state;
-    validationObjValue.value.message = validationStore.getValidationObj.message;
-
     message.value = validationStore.getValidationObj.message;
     state.value = validationStore.getValidationObj.state;
     return;
@@ -115,9 +103,6 @@ function ingredientAdd(ingredientName: string) {
   if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
     configurationListStore.addElement(ingredientToAdd);
   }
-  validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
-  validationObjValue.value.state = validationStore.getValidationObj.state;
-  validationObjValue.value.message = validationStore.getValidationObj.message;
 
   message.value = validationStore.getValidationObj.message;
   state.value = validationStore.getValidationObj.state;

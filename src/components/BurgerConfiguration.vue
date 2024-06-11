@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col">
+    <div class="col q-mx-sm">
       <h2 class="text-center text-h4">
         {{ $t('burger-configuration-title') }}
       </h2>
@@ -11,9 +11,13 @@
         {{ $t('burger-configuration-text') }}
       </h3>
 
-      <p :class="validationstate === 'failed' ? 'err' : 'success'">
+      <p
+        v-if="validationstate !== 'pending'"
+        :class="validationstate === 'failed' ? 'err' : 'success'"
+      >
         {{ $t(message) }}
       </p>
+
       <p v-if="message === '' && completeBurgerListSaveValid" class="success">
         {{ $t(completeBurgerListSaveMessage) }}
       </p>
@@ -106,7 +110,7 @@ const saveBurger = () => {
     return;
   }
 
-  if (burgerName.value === '') {
+  if (burgerName.value === '' || burgerName.value.trim() === '') {
     completeBurgerListSaveValid.value = false;
     completeBurgerListSaveMessage.value =
       'Validation-messages.name field empty';
@@ -177,7 +181,7 @@ watchEffect(() => {
 }
 
 form {
-  width: 100%;
+  width: 75%;
   max-width: 20rem;
 }
 .burger {
