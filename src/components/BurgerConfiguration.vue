@@ -11,8 +11,11 @@
         {{ $t('burger-configuration-text') }}
       </h3>
 
-      <p class="err" v-if="state === 'failed'">
+      <p :class="validationstate === 'failed' ? 'err' : 'success'">
         {{ $t(message) }}
+      </p>
+      <p v-if="message === '' && completeBurgerListSaveValid" class="success">
+        {{ $t(completeBurgerListSaveMessage) }}
       </p>
 
       <template v-if="configurationElement.length > 0">
@@ -30,7 +33,7 @@
           />
         </div>
       </template>
-      <template v-if="state === 'success'">
+      <template v-if="validationstate === 'ready to save'">
         <div class="row">
           <div class="col">
             <form
@@ -42,9 +45,12 @@
                 filled
                 v-model="burgerName"
                 label="Nazwa burgera"
+                @focus="clearValidation"
               />
               <br />
-
+              <p v-if="!completeBurgerListSaveValid" class="err">
+                {{ $t(completeBurgerListSaveMessage) }}
+              </p>
               <br />
               <q-btn
                 size="xl"
@@ -59,12 +65,6 @@
           </div>
         </div>
       </template>
-      <p
-        v-if="completeBurgerListSaveMessage"
-        :class="completeBurgerListSaveStatus ? 'success' : 'err'"
-      >
-        {{ $t(completeBurgerListSaveMessage) }}
-      </p>
     </div>
   </div>
 </template>
@@ -81,31 +81,33 @@ const props = defineProps<{
   configuration: IngredientModel[];
   favouriteList: CompleteBurgerModel[];
   message: string;
-  state: string;
+  validationstate: string;
 }>();
 
 const configurationElement = ref<IngredientModel[]>(props.configuration);
 const favouriteListElement = ref<CompleteBurgerModel[]>(props.favouriteList);
 const message = ref<string>(props.message);
-const state = ref<string>(props.state);
+const validationstate = ref<string>(props.validationstate);
 
 const burgerName = ref<string>('');
-let completeBurgerListSaveStatus = ref<boolean>(false);
+let completeBurgerListSaveValid = ref<boolean>(false);
 let completeBurgerListSaveMessage = ref<string>('');
 
 const saveBurger = () => {
+  clearValidation();
+
   if (
     favouriteListElement.value
       .map((burger) => burger.name)
       .includes(burgerName.value)
   ) {
-    completeBurgerListSaveStatus.value = false;
+    completeBurgerListSaveValid.value = false;
     completeBurgerListSaveMessage.value = 'Validation-messages.already exists';
     return;
   }
 
   if (burgerName.value === '') {
-    completeBurgerListSaveStatus.value = false;
+    completeBurgerListSaveValid.value = false;
     completeBurgerListSaveMessage.value =
       'Validation-messages.name field empty';
     return;
@@ -115,7 +117,7 @@ const saveBurger = () => {
       ingredients: [...configurationElement.value],
     });
 
-    completeBurgerListSaveStatus.value = true;
+    completeBurgerListSaveValid.value = true;
     completeBurgerListSaveMessage.value = 'Validation-messages.burger saved';
   }
 
@@ -123,10 +125,13 @@ const saveBurger = () => {
 
   burgerName.value = '';
   configurationElement.value.length = 0;
-  // completeBurgerListSaveStatus.value = false;
-  // completeBurgerListSaveMessage.value = '';
-  state.value = '';
+  validationstate.value = '';
   message.value = '';
+};
+
+const clearValidation = () => {
+  completeBurgerListSaveValid.value = false;
+  completeBurgerListSaveMessage.value = '';
 };
 
 //replacing images from the ingredient list with images for configuration
@@ -151,7 +156,7 @@ watch(
 );
 watchEffect(() => {
   message.value = props.message;
-  state.value = props.state;
+  validationstate.value = props.validationstate;
   favouriteListElement.value = props.favouriteList;
 });
 </script>

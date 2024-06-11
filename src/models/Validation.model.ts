@@ -1,5 +1,5 @@
 export interface ValidationModel {
-  state: 'pending' | 'failed' | 'success' | '';
+  state: 'pending' | 'failed' | 'success' | 'ready to save' | '';
   message: string;
-  valid: boolean | null;
+  proceed: boolean | null;
 }

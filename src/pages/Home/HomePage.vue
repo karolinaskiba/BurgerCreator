@@ -20,7 +20,7 @@
         <burger-configuration
           :validationObj="validationObjValue"
           :message="message"
-          :state="state"
+          :validationstate="state"
           :configuration="configuration"
           :favouriteList="favouriteList"
           @save-burger="saveBurger"
@@ -71,8 +71,8 @@ function ingredientRemove(ingredientName: string) {
 
   validationStore.setValidationObj(validationResult);
 
-  if (!validationStore.getValidationObj.valid) {
-    validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  if (!validationStore.getValidationObj.proceed) {
+    validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
     validationObjValue.value.state = validationStore.getValidationObj.state;
     validationObjValue.value.message = validationStore.getValidationObj.message;
 
@@ -82,7 +82,7 @@ function ingredientRemove(ingredientName: string) {
   }
 
   configurationListStore.removeElement(ingredientName);
-  validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
   validationObjValue.value.state = validationStore.getValidationObj.state;
   validationObjValue.value.message = validationStore.getValidationObj.message;
 
@@ -97,8 +97,8 @@ function ingredientAdd(ingredientName: string) {
   );
   validationStore.setValidationObj(validationResult);
 
-  if (!validationStore.getValidationObj.valid) {
-    validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  if (!validationStore.getValidationObj.proceed) {
+    validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
     validationObjValue.value.state = validationStore.getValidationObj.state;
     validationObjValue.value.message = validationStore.getValidationObj.message;
 
@@ -115,7 +115,7 @@ function ingredientAdd(ingredientName: string) {
   if (ingredientToAdd !== null && ingredientToAdd !== undefined) {
     configurationListStore.addElement(ingredientToAdd);
   }
-  validationObjValue.value.valid = validationStore.getValidationObj.valid;
+  validationObjValue.value.proceed = validationStore.getValidationObj.proceed;
   validationObjValue.value.state = validationStore.getValidationObj.state;
   validationObjValue.value.message = validationStore.getValidationObj.message;
 
@@ -133,7 +133,7 @@ function clearConfiguration() {
   configuration.value.length = 0;
   configuration.value = configurationListStore.allElements;
   favouriteList.value = favouriteListStore.allElements;
-  validationObjValue.value.valid = false;
+  validationObjValue.value.proceed = false;
   validationObjValue.value.state = '';
   validationObjValue.value.message = '';
 }
