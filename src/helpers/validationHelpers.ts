@@ -1,5 +1,5 @@
 import { IngredientModel } from 'src/models/Ingredient.model';
-import ValidationModel from 'src/models/Validation.model';
+import { ValidationModel } from 'src/models/Validation.model';
 
 export function checkValidationWhenAdded(
   ingredientName: string,

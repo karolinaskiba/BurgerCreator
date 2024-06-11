@@ -39,34 +39,11 @@
 import { IngredientModel } from 'src/models/Ingredient.model';
 import { reactive, ref, watch } from 'vue';
 
-const props = defineProps<{ ingredient: IngredientModel; quantity: number }>();
-
 const emit = defineEmits(['ingredient-add', 'ingredient-remove']);
+const props = defineProps<{ ingredient: IngredientModel; quantity: number }>();
 
 let ingredientElement = reactive({ ...props.ingredient });
 let quantityValue = ref(props.quantity);
-
-watch(
-  [() => props.ingredient, () => props.quantity], // Dodajemy props.quantity do tablicy z funkcjami reaktywnymi
-  ([newIngredient, newQuantity]) => {
-    ingredientElement = { ...newIngredient };
-    quantityValue.value = newQuantity;
-  }
-);
-
-// watch(
-//   [() => props.ingredient, () => props.quantity], // Dodajemy props.quantity do tablicy z funkcjami reaktywnymi
-//   ([newIngredient, newQuantity], [oldIngredient, oldQuantity]) => {
-//     // Logika do wykonania po zmianie props.ingredient lub props.quantity
-//     console.log('Nowy składnik:', oldIngredient);
-//     console.log('Nowa ilość:', oldQuantity);
-
-//     // Przykładowa operacja zaktualizowania ingredientElement
-
-//     ingredientElement = { ...newIngredient };
-//     quantityValue.value = newQuantity;
-//   }
-// );
 
 function ingredientAdd(ingredientName: string) {
   emit('ingredient-add', ingredientName);
@@ -74,4 +51,13 @@ function ingredientAdd(ingredientName: string) {
 function ingredientRemove(ingredientName: string) {
   emit('ingredient-remove', ingredientName);
 }
+
+//observing configuration changes in props to  updating the quantity of ingredients
+watch(
+  [() => props.ingredient, () => props.quantity],
+  ([newIngredient, newQuantity]) => {
+    ingredientElement = { ...newIngredient };
+    quantityValue.value = newQuantity;
+  }
+);
 </script>

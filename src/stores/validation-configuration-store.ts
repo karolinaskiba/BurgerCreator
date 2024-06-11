@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import ValidationModel from 'src/models/Validation.model';
+import { ValidationModel } from 'src/models/Validation.model';
 
 export const useValidationStore = defineStore({
   id: 'validationStore',
@@ -14,8 +14,6 @@ export const useValidationStore = defineStore({
 
   getters: {
     getValidationObj(): ValidationModel {
-      console.log('get', this.validationObj);
-
       return this.validationObj;
     },
   },
@@ -23,7 +21,6 @@ export const useValidationStore = defineStore({
   actions: {
     setValidationObj(element: ValidationModel) {
       this.validationObj = { ...element };
-      console.log('set', this.validationObj);
     },
 
     resetStore() {

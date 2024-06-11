@@ -19,7 +19,8 @@ export default {
   'Burger name required': 'Burger name can not be empty',
   'Favourites Burgers Title': 'Favourites Burgers',
   'Validation-messages': {
-    'already exists': 'Name of this burger already exists!',
+    'already exists':
+      'Name of this burger already exists! Please rename your burger!',
     'name field empty': 'The name field cannot be empty',
     'burger saved': 'Burger saved successfully!',
   },

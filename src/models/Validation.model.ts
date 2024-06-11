@@ -1,4 +1,4 @@
-export default interface ValidationModel {
+export interface ValidationModel {
   state: 'pending' | 'failed' | 'success' | '';
   message: string;
   valid: boolean | null;

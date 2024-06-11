@@ -11,12 +11,8 @@
         {{ $t('burger-configuration-text') }}
       </h3>
 
-      <p class="err" v-if="validationObj.state === 'failed'">
-        {{ $t(validationObj.message) }}
-      </p>
-
-      <p :class="completeBurgerListSaveStatus ? 'success' : 'err'">
-        {{ $t(completeBurgerListSaveMessage) }}
+      <p class="err" v-if="state === 'failed'">
+        {{ $t(message) }}
       </p>
 
       <template v-if="configurationElement.length > 0">
@@ -34,7 +30,7 @@
           />
         </div>
       </template>
-      <template v-if="validationObj.state === 'success'">
+      <template v-if="state === 'success'">
         <div class="row">
           <div class="col">
             <form
@@ -47,6 +43,9 @@
                 v-model="burgerName"
                 label="Nazwa burgera"
               />
+              <br />
+
+              <br />
               <q-btn
                 size="xl"
                 rounded
@@ -60,45 +59,46 @@
           </div>
         </div>
       </template>
+      <p
+        v-if="completeBurgerListSaveMessage"
+        :class="completeBurgerListSaveStatus ? 'success' : 'err'"
+      >
+        {{ $t(completeBurgerListSaveMessage) }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, ref, watch, watchEffect } from 'vue';
 import { QInput } from 'quasar';
 import { IngredientModel } from 'src/models/Ingredient.model';
+import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 
-import ValidationModel from 'src/models/Validation.model';
-
-const props = defineProps(['configuration', 'validationObj', 'favouriteList']);
 const emit = defineEmits(['clear-configuration', 'save-burger']);
 
-let configurationElement = reactive([...props.configuration]);
-let favouriteListElement = reactive([...props.favouriteList]);
-let validationObj = ref<ValidationModel>(props.validationObj);
+const props = defineProps<{
+  configuration: IngredientModel[];
+  favouriteList: CompleteBurgerModel[];
+  message: string;
+  state: string;
+}>();
+
+const configurationElement = ref<IngredientModel[]>(props.configuration);
+const favouriteListElement = ref<CompleteBurgerModel[]>(props.favouriteList);
+const message = ref<string>(props.message);
+const state = ref<string>(props.state);
 
 const burgerName = ref<string>('');
-
 let completeBurgerListSaveStatus = ref<boolean>(false);
 let completeBurgerListSaveMessage = ref<string>('');
 
-const imageUrlToShow = computed(() => {
-  const textToRm = 'ingredient-';
-
-  return (imageUrl: string): string => {
-    if (typeof imageUrl === 'string' && imageUrl.includes(textToRm)) {
-      return imageUrl.replace(new RegExp(textToRm, 'g'), '');
-    }
-
-    return imageUrl;
-  };
-});
-const savedBurgersNames: string[] = favouriteListElement.map(
-  (burger) => burger.name
-);
 const saveBurger = () => {
-  if (savedBurgersNames.includes(burgerName.value)) {
+  if (
+    favouriteListElement.value
+      .map((burger) => burger.name)
+      .includes(burgerName.value)
+  ) {
     completeBurgerListSaveStatus.value = false;
     completeBurgerListSaveMessage.value = 'Validation-messages.already exists';
     return;
@@ -112,31 +112,48 @@ const saveBurger = () => {
   } else {
     emit('save-burger', {
       name: burgerName.value,
-      ingredients: [...configurationElement],
+      ingredients: [...configurationElement.value],
     });
 
     completeBurgerListSaveStatus.value = true;
     completeBurgerListSaveMessage.value = 'Validation-messages.burger saved';
   }
+
   emit('clear-configuration');
 
   burgerName.value = '';
-
-  configurationElement.length = 0;
-  validationObj.value = { state: '', message: '', valid: false };
+  configurationElement.value.length = 0;
+  // completeBurgerListSaveStatus.value = false;
+  // completeBurgerListSaveMessage.value = '';
+  state.value = '';
+  message.value = '';
 };
 
-watch(props.configuration, (newElement: IngredientModel[]) => {
-  configurationElement.length = 0;
-  configurationElement.push(...newElement);
+//replacing images from the ingredient list with images for configuration
+const imageUrlToShow = computed(() => {
+  const textToRm = 'ingredient-';
+  return (imageUrl: string): string => {
+    if (typeof imageUrl === 'string' && imageUrl.includes(textToRm)) {
+      return imageUrl.replace(new RegExp(textToRm, 'g'), '');
+    }
+
+    return imageUrl;
+  };
 });
 
+//observing changes in props
 watch(
-  () => props.validationObj,
-  (newValue) => {
-    validationObj.value = newValue.value;
+  () => props.configuration,
+  (newElement: IngredientModel[]) => {
+    configurationElement.value.length = 0;
+    configurationElement.value = newElement;
   }
 );
+watchEffect(() => {
+  message.value = props.message;
+  state.value = props.state;
+  favouriteListElement.value = props.favouriteList;
+});
 </script>
 
 <style scoped lang="scss">

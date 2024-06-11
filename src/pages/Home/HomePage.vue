@@ -19,6 +19,8 @@
       <div class="col-sm-6">
         <burger-configuration
           :validationObj="validationObjValue"
+          :message="message"
+          :state="state"
           :configuration="configuration"
           :favouriteList="favouriteList"
           @save-burger="saveBurger"
@@ -32,13 +34,13 @@
 <script setup lang="ts">
 import IngredientsList from '../../components/IngredientsList.vue';
 import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
+import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { IngredientModel } from 'src/models/Ingredient.model';
-import ValidationModel from 'src/models/Validation.model';
+import { ValidationModel } from 'src/models/Validation.model';
 import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
 import { useConfigurationListStore } from 'src/stores/configuration-list-store';
 import { useValidationStore } from 'src/stores/validation-configuration-store';
 import { useFavouriteListStore } from 'src/stores/favourite-list-store';
-import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 
 import {
   checkValidationWhenAdded,
@@ -54,19 +56,17 @@ const favouriteListStore = useFavouriteListStore();
 const ingredients = reactive<IngredientModel[]>(
   burgerIngredienstListStore.allElements
 );
-const configuration = reactive<IngredientModel[]>(
-  configurationListStore.allElements
-);
-const favouriteList = reactive<CompleteBurgerModel[]>(
-  favouriteListStore.allElements
-);
+let configuration = ref<IngredientModel[]>(configurationListStore.allElements);
+let favouriteList = ref<CompleteBurgerModel[]>(favouriteListStore.allElements);
 
 let validationObjValue = ref<ValidationModel>(validationStore.getValidationObj);
+let message = ref<string>(validationObjValue.value.message);
+let state = ref<string>(validationObjValue.value.state);
 
 function ingredientRemove(ingredientName: string) {
   let validationResult: ValidationModel = checkValidationWhenRemove(
     ingredientName,
-    configuration
+    configuration.value
   );
 
   validationStore.setValidationObj(validationResult);
@@ -75,6 +75,9 @@ function ingredientRemove(ingredientName: string) {
     validationObjValue.value.valid = validationStore.getValidationObj.valid;
     validationObjValue.value.state = validationStore.getValidationObj.state;
     validationObjValue.value.message = validationStore.getValidationObj.message;
+
+    message.value = validationStore.getValidationObj.message;
+    state.value = validationStore.getValidationObj.state;
     return;
   }
 
@@ -82,12 +85,15 @@ function ingredientRemove(ingredientName: string) {
   validationObjValue.value.valid = validationStore.getValidationObj.valid;
   validationObjValue.value.state = validationStore.getValidationObj.state;
   validationObjValue.value.message = validationStore.getValidationObj.message;
+
+  message.value = validationStore.getValidationObj.message;
+  state.value = validationStore.getValidationObj.state;
 }
 
 function ingredientAdd(ingredientName: string) {
   let validationResult: ValidationModel = checkValidationWhenAdded(
     ingredientName,
-    configuration
+    configuration.value
   );
   validationStore.setValidationObj(validationResult);
 
@@ -95,6 +101,9 @@ function ingredientAdd(ingredientName: string) {
     validationObjValue.value.valid = validationStore.getValidationObj.valid;
     validationObjValue.value.state = validationStore.getValidationObj.state;
     validationObjValue.value.message = validationStore.getValidationObj.message;
+
+    message.value = validationStore.getValidationObj.message;
+    state.value = validationStore.getValidationObj.state;
     return;
   }
 
@@ -109,15 +118,24 @@ function ingredientAdd(ingredientName: string) {
   validationObjValue.value.valid = validationStore.getValidationObj.valid;
   validationObjValue.value.state = validationStore.getValidationObj.state;
   validationObjValue.value.message = validationStore.getValidationObj.message;
+
+  message.value = validationStore.getValidationObj.message;
+  state.value = validationStore.getValidationObj.state;
 }
 function saveBurger(completeBurger: CompleteBurgerModel) {
   favouriteListStore.addElement(completeBurger);
-  favouriteListStore.allElements;
 }
 function clearConfiguration() {
   configurationListStore.resetStore();
   validationStore.resetStore();
-  configuration.length = 0;
+  validationStore.resetStore();
+
+  configuration.value.length = 0;
+  configuration.value = configurationListStore.allElements;
+  favouriteList.value = favouriteListStore.allElements;
+  validationObjValue.value.valid = false;
+  validationObjValue.value.state = '';
+  validationObjValue.value.message = '';
 }
 </script>
 
