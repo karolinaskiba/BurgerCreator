@@ -7,8 +7,8 @@
         </h1>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
+    <div class="row flex-sm-center">
+      <div class="col-12 col-sm-6">
         <ingredients-list
           :ingredients="ingredients"
           :configuration="configuration"
@@ -16,7 +16,7 @@
           @ingredient-remove="ingredientRemove"
         />
       </div>
-      <div class="col-sm-6">
+      <div class="col-12 col-sm-6">
         <burger-configuration
           :validationObj="validationObjValue"
           :message="message"
