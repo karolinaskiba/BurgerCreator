@@ -36,7 +36,7 @@ import BurgerConfiguration from 'src/components/BurgerConfiguration.vue';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import { ValidationModel } from 'src/models/Validation.model';
-import { useBurgerIngredienstListStore } from 'src/stores/burder-ingredients-list-store';
+import { useBurgerIngredienstListStore } from 'src/stores/burger-ingredients-list-store';
 import { useConfigurationListStore } from 'src/stores/configuration-list-store';
 import { useValidationStore } from 'src/stores/validation-configuration-store';
 import { useFavouriteListStore } from 'src/stores/favourite-list-store';

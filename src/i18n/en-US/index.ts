@@ -18,12 +18,27 @@ export default {
     'You don’t have any favourites burgers',
   'Burger name required': 'Burger name can not be empty',
   'Favourites Burgers Title': 'Favourites Burgers',
+
   'Validation-messages': {
     'already exists':
       'Name of this burger already exists! Please rename your burger!',
     'name field empty': 'The name field cannot be empty',
     'burger saved': 'Burger saved successfully!',
+    'Burger ready to save': 'Burger ready to save',
+    'Bad ingredient': 'Bad ingredient',
+    OK: 'OK',
+    'Incorrect first element': 'Incorrect first element',
+    'Last item must be top bun': 'Last item must be top bun',
+    'You cannot remove': 'You cannot remove',
+    'Element not exist': 'Element not exist',
+    'You cannot add more top buns': 'You cannot add more top buns',
+    'You cannot add more ingredients': 'You cannot add more ingredients',
+    'Your burger is empty': 'Your burger is empty',
+    'You cannot remove something from inside':
+      'You cannot remove something from inside',
+    'Unknown error': 'Unknown error',
   },
+
   failed: 'Action failed',
   success: 'Action was successful',
   button: {

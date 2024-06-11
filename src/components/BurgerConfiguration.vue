@@ -195,15 +195,15 @@ form {
   position: relative;
   max-width: 100%;
   &.lettuce {
-    margin-bottom: calc(-100% / 20);
+    margin-bottom: calc(-100% / 20.5);
   }
 
   &.cheese {
-    margin-bottom: calc(-100% / 12);
+    margin-bottom: calc(-100% / 14.8);
   }
 
   &.tomato {
-    margin-bottom: calc(-100% / 12);
+    margin-bottom: calc(-100% / 12.5);
   }
 }
 </style>

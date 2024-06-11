@@ -6,28 +6,28 @@ export function getValidationMessageLabel(
 ): string {
   switch (message) {
     case ValidationMessageEnum.BURGER_READY_TO_SAVE:
-      return 'Burger ready to save';
+      return 'Validation-messages.Burger ready to save';
     case ValidationMessageEnum.BAD_INGREDIENT:
-      return 'Bad ingredient';
+      return 'Validation-messages.Bad ingredient';
     case ValidationMessageEnum.OK:
-      return 'OK';
+      return 'Validation-messages.OK';
     case ValidationMessageEnum.INCORRECT_FIRST_ELEMENT:
-      return 'Incorrect first element';
+      return 'Validation-messages.Incorrect first element';
     case ValidationMessageEnum.LAST_ITEM_MUST_BE_TOP_BUN:
-      return 'Last item must be top bun';
+      return 'Validation-messages.Last item must be top bun';
     case ValidationMessageEnum.YOU_CANNOT_REMOVE:
-      return 'You cannot remove';
+      return 'Validation-messages.You cannot remove';
     case ValidationMessageEnum.ELEMENT_NOT_EXIST:
-      return 'Element not exist';
+      return 'Validation-messages.Element not exist';
     case ValidationMessageEnum.YOU_CAN_NOT_ADD_MORE_TOP_BUN:
-      return 'You cannot add more top buns';
+      return 'Validation-messages.You cannot add more top buns';
     case ValidationMessageEnum.YOU_CAN_NOT_ADD_MORE_INGREDIENTS:
-      return 'You cannot add more ingredients';
+      return 'Validation-messages.You cannot add more ingredients';
     case ValidationMessageEnum.YOUR_BURGER_IS_EMPTY:
-      return 'Your burger is empty';
+      return 'Validation-messages.Your burger is empty';
     case ValidationMessageEnum.YOU_CAN_NOT_REMOVE_FROM_INSIDE:
-      return 'You cannot remove something from inside';
+      return 'Validation-messages.You cannot remove something from inside';
     default:
-      return 'Unknown error';
+      return 'Validation-messages.Unknown error';
   }
 }
