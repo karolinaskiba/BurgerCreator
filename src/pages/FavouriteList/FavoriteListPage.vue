@@ -40,13 +40,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useFavouriteListStore } from '../../stores/favourite-list-store';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 
 const favouriteListStore = useFavouriteListStore();
 
-const burgers = computed(() => favouriteListStore.allElements);
+let burgers = computed(() => favouriteListStore.allElements);
+
+onMounted(() => {
+  favouriteListStore.loadFromLocalStorage();
+});
 
 const imageUrlToShow = computed(() => {
   const textToRm = 'ingredient-';
@@ -88,8 +92,7 @@ function removeFromList(burger: CompleteBurgerModel) {
   align-items: flex-end;
   flex-wrap: wrap;
 }
-.burger-name {
-}
+
 .burger {
   width: 20%;
   min-width: 250px;
