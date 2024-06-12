@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/Home/HomePage.vue'),
       },
       {
-        path: '/favourite-lis',
+        path: '/favourite-list',
         component: () => import('pages/FavouriteList/FavoriteListPage.vue'),
       },
     ],
