@@ -19,7 +19,7 @@
             class="ingredient"
           >
             <img
-              :src="imageUrlToShow(ingredient.imageUrl)"
+              :src="ingredientImage(ingredient.imageUrl)"
               :ratio="1"
               class="ingredient-img"
               :class="ingredient.name"
@@ -43,6 +43,7 @@
 import { computed, onMounted } from 'vue';
 import { useFavouriteListStore } from '../../stores/favourite-list-store';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
+import { replaceImage } from 'src/helpers/replaceImageHelper';
 
 const favouriteListStore = useFavouriteListStore();
 
@@ -52,17 +53,8 @@ onMounted(() => {
   favouriteListStore.loadFromLocalStorage();
 });
 
-const imageUrlToShow = computed(() => {
-  const textToRm = 'ingredient-';
-
-  return (imageUrl: string): string => {
-    if (typeof imageUrl === 'string' && imageUrl.includes(textToRm)) {
-      return imageUrl.replace(new RegExp(textToRm, 'g'), '');
-    }
-
-    return imageUrl;
-  };
-});
+// computed function to replacing images from the ingredient list with images for configuration
+const ingredientImage = replaceImage();
 
 function removeFromList(burger: CompleteBurgerModel) {
   favouriteListStore.removeElement(burger);

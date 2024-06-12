@@ -31,7 +31,7 @@
           class="burger"
         >
           <img
-            :src="imageUrlToShow(ingredient.imageUrl)"
+            :src="ingredientImage(ingredient.imageUrl)"
             :ratio="1"
             class="ingredient-img"
             :class="ingredient.name"
@@ -76,11 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue';
+import { ref, watch, watchEffect } from 'vue';
 import { QInput } from 'quasar';
 import { IngredientModel } from 'src/models/Ingredient.model';
 import { CompleteBurgerModel } from 'src/models/CompleteBurger.model';
 import { ValidationStatusEnum } from 'src/enums/ValidationStatus.enum';
+import { replaceImage } from 'src/helpers/replaceImageHelper';
 
 const emit = defineEmits(['clear-configuration', 'save-burger']);
 
@@ -141,17 +142,8 @@ const clearValidation = () => {
   completeBurgerListSaveMessage.value = '';
 };
 
-//replacing images from the ingredient list with images for configuration
-const imageUrlToShow = computed(() => {
-  const textToRm = 'ingredient-';
-  return (imageUrl: string): string => {
-    if (typeof imageUrl === 'string' && imageUrl.includes(textToRm)) {
-      return imageUrl.replace(new RegExp(textToRm, 'g'), '');
-    }
-
-    return imageUrl;
-  };
-});
+// computed function to replacing images from the ingredient list with images for configuration
+const ingredientImage = replaceImage();
 
 //observing changes in props
 watch(
@@ -167,43 +159,3 @@ watchEffect(() => {
   favouriteListElement.value = props.favouriteList;
 });
 </script>
-
-<style scoped lang="scss">
-.text-h4 {
-  color: $light;
-  font-size: clamp(1.5rem, -3.5rem + 6.6667vw, 4.5rem);
-  line-height: 1;
-  line-break: strict;
-}
-
-.text-subtitle1 {
-  width: 300px;
-  max-width: 75%;
-  margin: auto;
-  font-size: clamp(0.875rem, 0.8173rem + 0.2564vw, 1.125rem);
-}
-
-form {
-  width: 75%;
-  max-width: 20rem;
-}
-.burger {
-  max-width: 30vw;
-  margin: auto;
-}
-.ingredient-img {
-  position: relative;
-  max-width: 100%;
-  &.lettuce {
-    margin-bottom: calc(-100% / 20.5);
-  }
-
-  &.cheese {
-    margin-bottom: calc(-100% / 14.8);
-  }
-
-  &.tomato {
-    margin-bottom: calc(-100% / 12.5);
-  }
-}
-</style>

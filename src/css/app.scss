@@ -43,6 +43,49 @@ body {
   height: initial !important;
   object-fit: contain;
 }
+.text-h4 {
+  color: $light;
+  font-size: clamp(1.5rem, -3.5rem + 6.6667vw, 4.5rem);
+  line-height: 1;
+  line-break: strict;
+}
+
+.text-subtitle1 {
+  width: 300px;
+  max-width: 75%;
+  margin: auto;
+  font-size: clamp(0.875rem, 0.8173rem + 0.2564vw, 1.125rem);
+}
+
+form {
+  width: 75%;
+  max-width: 20rem;
+}
+.burger {
+  max-width: 30vw;
+  margin: auto;
+  position: relative;
+}
+.ingredient-img {
+  max-width: 100%;
+  &.lettuce {
+    // calculation of % mmaginage based on image dimensions (27px x 286px) (percentage height divided by 2)
+    margin-bottom: calc(-2700% / 286 / 2);
+    position: relative;
+  }
+
+  &.cheese {
+    // calculation of % mmaginage based on image dimensions (37px x 286px) (percentage height divided by 2)
+    margin-bottom: calc(-3700% / 286 / 2);
+    position: relative;
+  }
+
+  &.tomato {
+    // calculation of % mmaginage based on image dimensions (43px x 286px) (percentage height divided by 2)
+    margin-bottom: calc(-4300% / 286 / 2);
+    position: relative;
+  }
+}
 .err {
   text-align: center;
   color: $negative;
