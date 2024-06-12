@@ -6,19 +6,19 @@ export function getImageUrlByIngredientName(
 ): string | null {
   switch (name) {
     case IngredientNameEnum.BOTTOM_BUN:
-      return '../../src/assets/images/bottom-bun.png';
+      return '/images/bottom-bun.png';
     case IngredientNameEnum.TOP_BUN:
-      return '../../src/assets/images/top-bun.png';
+      return '/images/top-bun.png';
     case IngredientNameEnum.TOMATO:
-      return '../../src/assets/images/tomato.png';
+      return '/images/tomato.png';
     case IngredientNameEnum.MEAT:
-      return '../../src/assets/images/ingredient-burger.png';
+      return '/images/ingredient-burger.png';
     case IngredientNameEnum.FISH:
-      return '../../src/assets/images/ingredient-fish.png';
+      return '/images/ingredient-fish.png';
     case IngredientNameEnum.LETTUCE:
-      return '../../src/assets/images/lettuce.png';
+      return '/images/lettuce.png';
     case IngredientNameEnum.CHEESE:
-      return '../../src/assets/images/ingredient-cheese.png';
+      return '/images/ingredient-cheese.png';
     default:
       return null;
   }
