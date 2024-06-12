@@ -25,20 +25,24 @@
       </p>
 
       <template v-if="configurationElement.length > 0">
-        <div
-          v-for="(ingredient, index) in configurationElement"
-          :key="index"
-          class="burger"
-        >
-          <img
-            :src="ingredientImage(ingredient.imageUrl)"
-            :ratio="1"
-            class="ingredient-img"
+        <transition-group name="burger" tag="div">
+          <div
+            v-for="(ingredient, index) in configurationElement"
+            :key="ingredient.name"
+            class="burger"
             :class="ingredient.name"
-            :style="{ zIndex: 50 - index }"
-          />
-        </div>
+            :style="{ zIndex: configurationElement.length - index }"
+          >
+            <img
+              :src="ingredientImage(ingredient.imageUrl)"
+              :ratio="1"
+              class="ingredient-img"
+              :class="ingredient.name"
+            />
+          </div>
+        </transition-group>
       </template>
+
       <template v-if="validationstate === ValidationStatusEnum.READY_TO_SAVE">
         <div class="row">
           <div class="col">
@@ -159,3 +163,35 @@ watchEffect(() => {
   favouriteListElement.value = props.favouriteList;
 });
 </script>
+<style scoped lang="scss">
+.burger {
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+  opacity: 1;
+  transform: translateY(0);
+
+  &-enter-active,
+  &-leave-active {
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+  }
+
+  &-enter-from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  &-enter-to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+</style>
