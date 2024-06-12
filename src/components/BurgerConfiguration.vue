@@ -110,8 +110,8 @@ const saveBurger = () => {
 
   if (
     favouriteListElement.value
-      .map((burger) => burger.name)
-      .includes(burgerName.value)
+      .map((burger) => burger.name.trim())
+      .includes(burgerName.value.trim())
   ) {
     completeBurgerListSaveValid.value = false;
     completeBurgerListSaveMessage.value = 'Validation-messages.already exists';
@@ -125,7 +125,7 @@ const saveBurger = () => {
     return;
   } else {
     emit('save-burger', {
-      name: burgerName.value,
+      name: burgerName.value.trim(),
       ingredients: [...configurationElement.value],
     });
 
