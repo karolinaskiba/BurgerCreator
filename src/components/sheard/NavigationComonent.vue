@@ -6,7 +6,7 @@
       </q-btn>
     </router-link>
 
-    <router-link text-color="black" to="favourite-lis">
+    <router-link text-color="black" to="favourite-list">
       <q-btn square class="button" size="sm">
         <q-icon color="black" :name="mdiHeartOutline" /> </q-btn
     ></router-link>
