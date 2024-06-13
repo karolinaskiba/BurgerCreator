@@ -25,7 +25,7 @@ export default {
     'name field empty': 'The name field cannot be empty',
     'burger saved': 'Burger saved successfully!',
     'Burger ready to save': 'Burger ready to save',
-    'Bad ingredient': 'Bad ingredient',
+    'Bad ingredient': 'First item must be bottom bun. Last item mus be top bun',
     OK: 'OK',
     'Incorrect first element':
       'Incorrect first element.First item must be bottom bun. Last item mus be top bun',
