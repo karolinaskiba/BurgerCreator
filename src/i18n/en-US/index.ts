@@ -27,12 +27,16 @@ export default {
     'Burger ready to save': 'Burger ready to save',
     'Bad ingredient': 'Bad ingredient',
     OK: 'OK',
-    'Incorrect first element': 'Incorrect first element',
-    'Last item must be top bun': 'Last item must be top bun',
-    'You cannot remove': 'You cannot remove',
+    'Incorrect first element':
+      'Incorrect first element.First item must be bottom bun. Last item mus be top bun',
+    'Last item must be top bun':
+      'The maximum number of items is 9 including buns. Last item must be top bun.',
+    'You cannot remove':
+      'You cannot remove bottom bum when other ingredient is on it',
     'Element not exist': 'Element not exist',
     'You cannot add more top buns': 'You cannot add more top buns',
-    'You cannot add more ingredients': 'You cannot add more ingredients',
+    'You cannot add more ingredients':
+      'You cannot add more ingredients. Last item mus be top bun',
     'Your burger is empty': 'Your burger is empty',
     'You cannot remove something from inside':
       'You cannot remove something from inside',
