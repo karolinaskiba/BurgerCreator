@@ -3,7 +3,7 @@
     <div class="row items-center justify-between">
       <q-btn
         round
-        color="red"
+        color="green"
         icon="add"
         size="xs"
         class="q-ma-sm"
@@ -14,7 +14,7 @@
       </span>
       <q-btn
         round
-        color="green"
+        color="red"
         icon="remove"
         size="xs"
         class="q-ma-sm"
